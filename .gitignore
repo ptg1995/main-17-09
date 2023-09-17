@@ -1,0 +1,35 @@
+# Arquivos e diretórios específicos do Airflow
+/airflow-webserver.pid
+/airflow-worker.pid
+/airflow-scheduler.pid
+/logs/
+/airflow-webserver-logs/
+/airflow-worker-logs/
+/airflow-scheduler-logs/
+
+# Ambiente virtual Python (venv)
+/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+.pycache/
+__pycache__/
+venv/
+env/
+.idea/
+
+# Docker
+/.dockerignore
+/docker-compose.yml
+/docker-compose.override.yml
+.DS_Store
+
+# Outros
+*.egg-info/
+*.egg
+*.log
+*.swp
+*~
