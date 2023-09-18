@@ -8,7 +8,8 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 from teste_raizen.get_data import extract_data_from_git
 from teste_raizen.save_data_silver_raw import save_tables_silver_raw
-from teste_raizen.transform_oil_data import transform_save_parquet_gold_raw
+from teste_raizen.transform_oil_data_gold_raw import transform_save_parquet_gold_raw
+from teste_raizen.transform_diesel_data_gold_raw import transform_save_parquet_diesel_gold_raw
 ##variaveis
 github_url = "https://github.com/ptg1995/data-engineering-test/raw/master/assets/vendas-combustiveis-m3.xls"
 output_filename = "data_full.xls"
@@ -18,6 +19,9 @@ sheets_data_full = {"DPCache_m3": "oil_derivative", "DPCache_m3_2": "diesel"}
 
 folder_path = '/root/airflow/dags/silver_raw/oil_derivative_data.xlsx'
 parquet_path = '/root/airflow/dags/gold_raw/oil_derivative_gold_partitioned'
+
+folder_path_diesel = '/root/airflow/dags/silver_raw/diesel_data.xlsx'
+parquet_path_diesel = '/root/airflow/dags/gold_raw/diesel_gold_partitioned'
 
 ##DAG
 with DAG(
@@ -53,6 +57,14 @@ with DAG(
         ),
         dag=dag,
     )
+    save_diesel_data_gold_raw = PythonOperator(
+        task_id="save_diesel_data_gold_raw",
+        python_callable=lambda: transform_save_parquet_diesel_gold_raw(
+            folder_path_diesel,parquet_path_diesel
+        ),
+        dag=dag,
+    )
 
 # Execução das tasks
-get_data_xls >> transform_file_xlsto_xlsx >> save_tables_silver_raw_task >> save_oil_derivates_gold_raw
+get_data_xls >> transform_file_xlsto_xlsx >> save_tables_silver_raw_task >> [save_oil_derivates_gold_raw,save_diesel_data_gold_raw]
+# [save_oil_derivates_gold_raw,save_diesel_data_gold_raw]

@@ -36,3 +36,5 @@ env/
 bronze_raw/
 gold_raw/
 silver_raw/
+.pycache/
+__pycache__/
