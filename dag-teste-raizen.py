@@ -11,7 +11,7 @@ from teste_raizen.save_data_silver_raw import save_tables_silver_raw
 from teste_raizen.transform_oil_data import transform_save_parquet_gold_raw
 ##variaveis
 github_url = "https://github.com/ptg1995/data-engineering-test/raw/master/assets/vendas-combustiveis-m3.xls"
-output_filename = f"data_full.xls"
+output_filename = "data_full.xls"
 
 path_data_full_bronze = "/root/airflow/dags/bronze_raw/data_full.xlsx"
 sheets_data_full = {"DPCache_m3": "oil_derivative", "DPCache_m3_2": "diesel"}
@@ -31,7 +31,7 @@ with DAG(
     get_data_xls = PythonOperator(
         task_id="get_data_xls",
         python_callable=lambda: extract_data_from_git(
-            github_url, os.path.join(os.getcwd(), "dags", "bronze_raw", output_filename)
+            github_url, os.path.join(os.getcwd(),"airflow","dags", "bronze_raw", output_filename)
         ),
         dag=dag,
     )
@@ -49,7 +49,7 @@ with DAG(
     save_oil_derivates_gold_raw = PythonOperator(
         task_id="save_oil_derivates_gold_raw",
         python_callable=lambda: transform_save_parquet_gold_raw(
-            folder_path, parquet_path
+            folder_path,parquet_path
         ),
         dag=dag,
     )
