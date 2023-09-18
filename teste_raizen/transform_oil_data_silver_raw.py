@@ -2,6 +2,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 from datetime import date
+import re
 
 def create_dataframe_oil_silver(path):
     # Criar uma lista vazia para armazenar os novos dados
@@ -19,8 +20,14 @@ def create_dataframe_oil_silver(path):
             volume = row[mes]
             # Montar a data no formato "YYYY-MM"
             year_month = f"{ano}-{mes.zfill(2)}"
+            #criando a coluna de unidade
+            resultado = re.search(r'\((.*?)\)', combustivel)
+            if resultado:
+                unidade = resultado.group(1)
+            else:
+                unidade = ""
             # Adicionar os dados à lista
-            new_data.append([year_month, estado, combustivel, 'm3', volume, date.today()])
+            new_data.append([year_month, estado, combustivel, unidade, volume, date.today()])
     # Criar um novo DataFrame com os dados transformados
     oil_data_unpivot = pd.DataFrame(new_data, columns=['year_month', 'uf', 'product', 'unit', 'volume', 'created_at'])
     return oil_data_unpivot

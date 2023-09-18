@@ -1,6 +1,7 @@
 # datetime
 from datetime import timedelta, datetime
 import os
+from pyspark.sql import SparkSession, functions
 
 # The DAG object
 from airflow import DAG
@@ -18,11 +19,21 @@ path_data_full_bronze = "/root/airflow/dags/bronze_raw/data_full.xlsx"
 sheets_data_full = {"DPCache_m3": "oil_derivative", "DPCache_m3_2": "diesel"}
 
 folder_path = '/root/airflow/dags/silver_raw/oil_derivative_data.xlsx'
-parquet_path = '/root/airflow/dags/silver_raw/oil_derivative_gold_partitioned'
+parquet_path = '/root/airflow/dags/silver_raw/oil_derivative_silver_partitioned'
 
 folder_path_diesel = '/root/airflow/dags/silver_raw/diesel_data.xlsx'
-parquet_path_diesel = '/root/airflow/dags/silver_raw/diesel_gold_partitioned'
+parquet_path_diesel = '/root/airflow/dags/silver_raw/diesel_silver_partitioned'
 
+def create_spark_session(app_name="spark_teste_raizen"):
+    spark = SparkSession.builder \
+        .appName(app_name) \
+        .config("spark.executor.memory", "2g") \
+        .config("spark.driver.memory", "1g") \
+        .config("spark.ui.port", "4041")\
+        .getOrCreate()
+    return spark
+
+spark = create_spark_session()
 ##DAG
 with DAG(
     dag_id="AAATeste-raizen",
