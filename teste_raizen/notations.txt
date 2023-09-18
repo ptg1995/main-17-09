@@ -1,0 +1,7 @@
+openpyxl
+
+bronze, silver e gold
+
+Extrair o dados bruto e convertido (github) em uma pasta raw (bronze)
+
+Readme
