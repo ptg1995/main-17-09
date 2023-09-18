@@ -33,3 +33,6 @@ env/
 *.log
 *.swp
 *~
+bronze_raw/
+gold_raw/
+silver_raw/
