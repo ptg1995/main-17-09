@@ -1,6 +1,7 @@
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+from datetime import date
 
 def create_dataframe_diesel_gold(path):
     # Criar uma lista vazia para armazenar os novos dados
@@ -19,7 +20,7 @@ def create_dataframe_diesel_gold(path):
             # Montar a data no formato "YYYY-MM"
             year_month = f"{ano}-{mes.zfill(2)}"
             # Adicionar os dados à lista
-            new_data.append([year_month, estado, combustivel, 'm3', volume, pd.Timestamp.now()])
+            new_data.append([year_month, estado, combustivel, 'm3', volume, date.today()])
     # Criar um novo DataFrame com os dados transformados
     oil_data_unpivot = pd.DataFrame(new_data, columns=['year_month', 'uf', 'product', 'unit', 'volume', 'created_at'])
     return oil_data_unpivot
@@ -27,5 +28,5 @@ def create_dataframe_diesel_gold(path):
 def transform_save_parquet_diesel_gold_raw(folder_path, parquet_path):
     new_df = create_dataframe_diesel_gold(folder_path)
     table = pa.Table.from_pandas(new_df)
-    pq.write_to_dataset(table, root_path=parquet_path, partition_cols=['year_month'])
+    pq.write_to_dataset(table, root_path=parquet_path,partition_cols=['year_month'])
     return print('Tabela oil_derivates saved!')
