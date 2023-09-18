@@ -1,7 +1,15 @@
-openpyxl
+sudo apt update
+sudo apt install default-jdk
+pip install ariflow
+sudo apt-get update && sudo apt install libreoffice --fix-missing
+pip install pyarrow
+pip install pyspark
 
 bronze, silver e gold
 
 Extrair o dados bruto e convertido (github) em uma pasta raw (bronze)
 
 Readme
+
+
+Criar Unidade para diesel, tirar a unidade do nome do produto
