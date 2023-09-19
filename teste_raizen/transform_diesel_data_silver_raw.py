@@ -9,7 +9,7 @@ def create_dataframe_diesel_silver(path):
     new_data = []
     df = pd.read_excel(path)
     # Iterar pelas linhas da planilha original
-    for row in df.iterrows():
+    for index, row in df.iterrows():
         # Extrair informações das colunas
         combustivel = row['COMBUSTÍVEL']
         ano = row['ANO']
